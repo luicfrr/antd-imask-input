@@ -1,0 +1,121 @@
+{
+  "name": "antd-imask-input",
+  "version": "0.0.1",
+  "description": "Ant Design iMasked Input",
+  "main": "build/main/index.js",
+  "module": "build/module/index.js",
+  "types": "build/main/index.d.ts",
+  "source": "src/index",
+  "files": [
+    "build",
+    "!**/__tests__",
+    "!**/__fixtures__",
+    "!**/__mocks__"
+  ],
+  "scripts": {
+    "typescript": "tsc --noEmit",
+    "lint": "eslint \"**/*.{js,ts,tsx}\"",
+    "prepare": "yarn build:main && yarn build:module",
+    "build:main": "tsc --module commonjs --outDir build/main",
+    "build:module": "tsc",
+    "release": "release-it",
+    "example": "yarn --cwd example",
+    "bootstrap": "yarn example && yarn install"
+  },
+  "keywords": [
+    "react",
+    "antd",
+    "ant design",
+    "mask",
+    "mask input",
+    "masked",
+    "masked input",
+    "imask"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/luicfrr/antd-imask-input"
+  },
+  "author": "luicfrr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/luicfrr/antd-imask-input"
+  },
+  "homepage": "https://github.com/luicfrr/antd-imask-input",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "imask": "7.6.1"
+  },
+  "devDependencies": {
+    "@release-it/conventional-changelog": "^10.0.0",
+    "@types/react": "^19",
+    "antd": "^5",
+    "react-dom": "^19",
+    "eslint": "^9.24.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "^3.5.3",
+    "react": "^19",
+    "release-it": "^18.1.2",
+    "typescript": "~5.8.3"
+  },
+  "peerDependencies": {
+    "antd": ">=5",
+    "react": ">=18"
+  },
+  "jest": {
+    "preset": "react",
+    "modulePathIgnorePatterns": [
+      "<rootDir>/build/"
+    ]
+  },
+  "release-it": {
+    "git": {
+      "commitMessage": "chore: release ${version}",
+      "tagName": "v${version}"
+    },
+    "npm": {
+      "publish": true
+    },
+    "github": {
+      "release": true
+    },
+    "publishConfig": {
+      "registry": "https://registry.npmjs.org"
+    }
+  },
+  "eslintConfig": {
+    "root": true,
+    "extends": [
+      "prettier"
+    ],
+    "rules": {
+      "prettier/prettier": [
+        "error",
+        {
+          "quoteProps": "consistent",
+          "singleQuote": true,
+          "tabWidth": 2,
+          "trailingComma": "es5",
+          "useTabs": false
+        }
+      ]
+    }
+  },
+  "eslintIgnore": [
+    "node_modules/",
+    "build/"
+  ],
+  "prettier": {
+    "quoteProps": "consistent",
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "useTabs": false
+  },
+  "directories": {
+    "lib": "lib"
+  }
+}
