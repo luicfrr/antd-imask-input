@@ -33,9 +33,16 @@ export function MaskedInput( {
   ...props
 }: MaskedInputProps ) {
   const KEY_PRESS_EVENT = keyPressPropName()
-  const propValue = (
-    typeof propsValue === 'string' ? propsValue : defaultValue
-  ) || ''
+  const propValue = ( () => {
+    if (
+      typeof defaultValue === 'string' &&
+      defaultValue.trim().length > 0
+    ) {
+      return defaultValue
+    }
+
+    return propsValue ?? ''
+  } )()
   const [ value, setValue ] = useState( propValue )
   const lastValue = useRef( propValue )
   const innerRef = useRef<HTMLInputElement | null>( null )
