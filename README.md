@@ -2,7 +2,11 @@
 
 An iMasked [Ant Design Input](https://ant.design/components/input) component.
 
-Is this package usefull to you? Support it [buying me a coffee ☕](https://coff.ee/luicfrr) or giving a ⭐ on [GitHub](https://github.com/luicfrr/antd-imask-input).
+Is this package usefull to you?
+
+<a href="https://www.buymeacoffee.com/luicfrr" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
+Or give it a ⭐ on [GitHub](https://github.com/luicfrr/antd-imask-input).
 
 ## 🧰 Installation
 
