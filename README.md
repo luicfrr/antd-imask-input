@@ -2,7 +2,7 @@
 
 An iMasked [Ant Design Input](https://ant.design/components/input) component.
 
-If you like this package please give it a ⭐ on [GitHub](https://github.com/luicfrr/antd-imask-input).
+Is this package usefull to you? Support it [buying me a coffee ☕](https://coff.ee/luicfrr) or giving a ⭐ on [GitHub](https://github.com/luicfrr/antd-imask-input).
 
 ## 🧰 Installation
 
