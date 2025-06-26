@@ -4,15 +4,13 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  type ChangeEvent,
-  type FocusEvent
+  type ChangeEvent
 } from 'react'
 import {
   Input,
   type InputRef
 } from 'antd'
 import IMask, {
-  createPipe,
   InputMask
 } from 'imask'
 
@@ -23,6 +21,9 @@ import {
   OnChangeEvent
 } from './types'
 
+// helpers
+import { isEmpty } from './helpers'
+
 export function MaskedInput( {
   ref,
   mask,
@@ -32,20 +33,17 @@ export function MaskedInput( {
   definitions,
   ...props
 }: MaskedInputProps ) {
-  const propValue = ( () => {
-    if (
-      typeof defaultValue === 'string' &&
-      defaultValue.trim().length > 0
-    ) {
+  const initialValue = ( () => {
+    if ( !isEmpty( defaultValue ) ) {
       return defaultValue
     }
 
     return propsValue ?? ''
   } )()
-  const [ value, setValue ] = useState( propValue )
-  const lastValue = useRef( propValue )
+  const [ value, setValue ] = useState( initialValue )
+  const lastValue = useRef( initialValue )
   const innerRef = useRef<HTMLInputElement | null>( null )
-  const imask = useRef<InputMask<any> | null>( null )
+  const imask = useRef<InputMask>( null )
   const maskOptions = useMemo( () => ( {
     mask,
     definitions: {
@@ -56,53 +54,32 @@ export function MaskedInput( {
     ...propsMaskOptions
   } as InputMaskOptions ), [ mask ] )
 
-  const placeholder = useMemo( () => (
-    createPipe( maskOptions as any )( '' )
-  ), [ maskOptions ] )
-
   const onEvent = useCallback( (
-    event: ChangeEvent<HTMLInputElement> | FocusEvent<HTMLInputElement>,
-    execOnChangeCallback = false
+    event: ChangeEvent<HTMLInputElement>
   ) => {
     const masked = imask.current
-    if ( !masked ) return
-
+    const target = event.target
     if (
-      event.target &&
-      event.target.value !== masked.value
-    ) {
-      masked.value = event.target.value
-      event.target.value = masked.value
+      !masked ||
+      !target
+    ) return
+
+    if ( target.value !== masked.value ) {
+      masked.value = target.value
       lastValue.current = masked.value
+      event.target.value = masked.value
     }
 
     Object.assign( event, {
       maskedValue: masked.value,
-      unmaskedValue: masked.unmaskedValue,
+      unmaskedValue: masked.unmaskedValue
     } )
 
     masked.updateValue()
+    masked.alignCursor()
     setValue( () => lastValue.current )
 
-    if ( execOnChangeCallback ) {
-      props.onChange?.( event as OnChangeEvent )
-    }
-  }, [] )
-
-  const onAccept = useCallback( (
-    event?: any
-  ) => {
-    if ( !event?.target ) return
-
-    const input = innerRef.current
-    const masked = imask.current
-    if ( !input || !masked ) return
-
-    event.target.value = masked.value
-    input.value = masked.value
-    lastValue.current = masked.value
-
-    onEvent( event, true )
+    props.onChange?.( event as OnChangeEvent )
   }, [] )
 
   useEffect( () => {
@@ -114,52 +91,53 @@ export function MaskedInput( {
     }
   }, [ mask ] )
 
+  useEffect( () => {
+    const masked = imask.current
+    if ( !masked ) return
+
+    masked.value = propsValue ?? ''
+    lastValue.current = masked.value
+    setValue( () => masked.value )
+  }, [ propsValue ] )
+
   function updateMaskRef() {
     const input = innerRef.current
 
-    if ( imask.current ) {
+    if ( !imask.current ) {
+      if ( !input ) return
+
+      imask.current = IMask( input, maskOptions )
+    } else {
       imask.current.updateOptions( maskOptions as any )
-    }
-
-    if ( !imask.current && input ) {
-      imask.current = IMask<any>( input, maskOptions )
-      imask.current.on( 'accept', onAccept )
-    }
-
-    if ( imask.current && imask.current.value !== lastValue.current ) {
-      imask.current.value = lastValue.current
-      imask.current.alignCursor()
     }
   }
 
   function handleRef(
     currentRef: InputRef | null
   ) {
-    if ( ref ) {
-      switch ( typeof ref ) {
-        case 'function': {
-          ref( currentRef )
-          break
-        }
-        default: ref.current = currentRef
-      }
-    }
-
     if ( !currentRef?.input ) {
       return
     }
 
-    innerRef.current = currentRef.input
-    if ( !imask.current ) {
-      updateMaskRef()
+    switch ( typeof ref ) {
+      case 'function': {
+        ref( currentRef )
+        break
+      }
+      default: {
+        if ( !ref ) return
+        ref.current = currentRef
+      }
     }
+
+    innerRef.current = currentRef.input
+    updateMaskRef()
   }
 
   return (
     <Input
       { ...props }
-      placeholder={ placeholder }
-      onChange={ ( e ) => onEvent( e, true ) }
+      onChange={ onEvent }
       value={ value }
       ref={ handleRef }
     />
