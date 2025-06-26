@@ -32,7 +32,6 @@ export function MaskedInput( {
   definitions,
   ...props
 }: MaskedInputProps ) {
-  const KEY_PRESS_EVENT = keyPressPropName()
   const propValue = ( () => {
     if (
       typeof defaultValue === 'string' &&
@@ -83,7 +82,7 @@ export function MaskedInput( {
     } )
 
     masked.updateValue()
-    setValue( lastValue.current )
+    setValue( () => lastValue.current )
 
     if ( execOnChangeCallback ) {
       props.onChange?.( event as OnChangeEvent )
@@ -114,41 +113,6 @@ export function MaskedInput( {
       imask.current = null
     }
   }, [ mask ] )
-
-  useEffect( () => {
-    updateValue( propValue )
-  }, [ propValue ] )
-
-  const eventHandlers = useMemo( () => ( {
-    onBlur( event: any ) {
-      onEvent( event )
-      props.onBlur?.( event )
-    },
-    onPaste( event: any ) {
-      lastValue.current = event.clipboardData?.getData( 'text' )
-
-      if ( event.target ) {
-        event.target.value = lastValue.current
-      }
-
-      onEvent(
-        event,
-        true
-      )
-      props.onPaste?.( event )
-    },
-    onFocus( ev: any ) {
-      onEvent( ev )
-      props.onFocus?.( ev )
-    },
-    [ KEY_PRESS_EVENT ]: ( event: any ) => {
-      onEvent(
-        event,
-        true
-      )
-      props[ KEY_PRESS_EVENT ]?.( event )
-    },
-  } ), [] )
 
   function updateMaskRef() {
     const input = innerRef.current
@@ -191,35 +155,10 @@ export function MaskedInput( {
     }
   }
 
-  function updateValue(
-    value: string
-  ) {
-    lastValue.current = value
-    const input = innerRef.current
-    const masked = imask.current
-
-    if ( !( input && masked ) ) return
-
-    masked.value = value
-    input.value = masked.value
-    lastValue.current = masked.value
-  }
-
-  function keyPressPropName() {
-    if (
-      typeof navigator !== 'undefined' &&
-      navigator.userAgent.match( /Android/i )
-    ) {
-      return 'onBeforeInput'
-    }
-    return 'onKeyPress'
-  }
-
   return (
     <Input
-      placeholder={ placeholder }
       { ...props }
-      { ...eventHandlers }
+      placeholder={ placeholder }
       onChange={ ( e ) => onEvent( e, true ) }
       value={ value }
       ref={ handleRef }
