@@ -8,10 +8,10 @@ import {
 } from 'antd'
 import {
   type Definitions,
-  PatternInputDefinition
+  FactoryArg
 } from 'imask'
 
-type MaskFieldType = string | RegExp | Function | Date | InputMaskOptions
+type MaskFieldType = string | RegExp | Function | Date | FactoryArg
 export type MaskType = MaskFieldType | MaskOptionsList
 export type OnChangeEvent = ChangeEvent<HTMLInputElement> & {
   maskedValue: string
@@ -19,12 +19,10 @@ export type OnChangeEvent = ChangeEvent<HTMLInputElement> & {
 }
 
 interface MaskOptionsList extends Array<MaskOptions> { }
-interface MaskOptions extends Omit<InputMaskOptions, 'mask'> {
+interface MaskOptions extends Omit<FactoryArg, 'mask'> {
   mask: MaskFieldType
 }
-export type InputMaskOptions = {
-  [ K in keyof PatternInputDefinition ]?: PatternInputDefinition[ K ]
-}
+
 export interface MaskedInputProps
   extends Omit<InputProps, 'onChange' | 'value' | 'defaultValue'> {
   ref?: Ref<InputRef>
@@ -32,7 +30,7 @@ export interface MaskedInputProps
   definitions?: Definitions
   value?: string
   defaultValue?: string
-  maskOptions?: InputMaskOptions
+  maskOptions?: FactoryArg
   onChange?: (
     event: OnChangeEvent
   ) => any

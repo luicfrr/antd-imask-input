@@ -11,12 +11,12 @@ import {
   type InputRef
 } from 'antd'
 import IMask, {
+  FactoryArg,
   InputMask
 } from 'imask'
 
 // types
 import {
-  InputMaskOptions,
   MaskedInputProps,
   OnChangeEvent
 } from './types'
@@ -43,16 +43,17 @@ export function MaskedInput( {
   const [ value, setValue ] = useState( initialValue )
   const lastValue = useRef( initialValue )
   const innerRef = useRef<HTMLInputElement | null>( null )
-  const imask = useRef<InputMask>( null )
-  const maskOptions = useMemo( () => ( {
-    mask,
-    definitions: {
-      '0': /[0-9]/,
-      ...definitions
-    },
-    lazy: false, // make placeholder always visible
-    ...propsMaskOptions
-  } as InputMaskOptions ), [ mask ] )
+  const imask = useRef<InputMask<FactoryArg>>( null )
+  const maskOptions = useMemo<FactoryArg>( () => (
+    Object.assign( {
+      mask,
+      definitions: {
+        '0': /[0-9]/,
+        ...definitions
+      },
+      lazy: false // make placeholder always visible
+    }, propsMaskOptions ?? {} )
+  ), [ mask ] )
 
   const onEvent = useCallback( (
     event: ChangeEvent<HTMLInputElement>
