@@ -12,14 +12,14 @@ import {
 } from 'imask'
 
 type MaskFieldType = string | RegExp | Function | Date | InputMaskOptions
-type MaskType = MaskFieldType | MaskOptionsList
+export type MaskType = MaskFieldType | MaskOptionsList
 export type OnChangeEvent = ChangeEvent<HTMLInputElement> & {
   maskedValue: string
   unmaskedValue: string
 }
 
 interface MaskOptionsList extends Array<MaskOptions> { }
-export interface MaskOptions extends Omit<InputMaskOptions, 'mask'> {
+interface MaskOptions extends Omit<InputMaskOptions, 'mask'> {
   mask: MaskFieldType
 }
 export type InputMaskOptions = {
