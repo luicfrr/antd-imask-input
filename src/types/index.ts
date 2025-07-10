@@ -8,7 +8,7 @@ import {
 } from 'antd'
 import {
   type Definitions,
-  FactoryArg
+  type FactoryArg
 } from 'imask'
 
 type MaskFieldType = string | RegExp | Function | Date | FactoryArg
