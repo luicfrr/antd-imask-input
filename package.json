@@ -49,21 +49,21 @@
     "imask": "^7"
   },
   "devDependencies": {
-    "@release-it/conventional-changelog": "^10.0.0",
+    "@release-it/conventional-changelog": "^10.0.1",
     "@types/react": "^19",
     "antd": "^5",
     "react-dom": "^19",
-    "eslint": "^9.24.0",
-    "eslint-config-prettier": "^10.1.1",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
     "prettier": "^3.5.3",
     "react": "^19",
-    "release-it": "^18.1.2",
+    "release-it": "^19.0.1",
     "typescript": "~5.8.3"
   },
   "peerDependencies": {
-    "antd": ">=5",
-    "react": ">=18"
+    "antd": ">= 5",
+    "react": ">= 18"
   },
   "jest": {
     "preset": "react",
