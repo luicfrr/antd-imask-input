@@ -29,9 +29,10 @@ export interface MaskedInputProps
   mask: MaskType
   definitions?: Definitions
   value?: string
-  defaultValue?: string
+  initialValue?: string
   maskOptions?: FactoryArg
   onChange?: (
     event: OnChangeEvent
   ) => any
+  enableLogs?: boolean
 }

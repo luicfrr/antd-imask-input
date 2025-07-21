@@ -27,21 +27,23 @@ import { isEmpty } from './helpers'
 export function MaskedInput( {
   ref,
   mask,
-  maskOptions: propsMaskOptions,
-  value: propsValue,
-  defaultValue,
   definitions,
+  enableLogs,
   ...props
 }: MaskedInputProps ) {
-  const initialValue = ( () => {
-    if ( !isEmpty( defaultValue ) ) {
-      return defaultValue
+  const initialValue = useRef( ( () => {
+    const {
+      value,
+      initialValue
+    } = props
+
+    if ( !isEmpty( initialValue ) ) {
+      return initialValue
     }
 
-    return propsValue ?? ''
-  } )()
-  const [ value, setValue ] = useState( initialValue )
-  const lastValue = useRef( initialValue )
+    return value ?? ''
+  } )() )
+  const [ value, setValue ] = useState( initialValue.current )
   const innerRef = useRef<HTMLInputElement | null>( null )
   const imask = useRef<InputMask<FactoryArg>>( null )
   const maskOptions = useMemo<FactoryArg>( () => (
@@ -52,7 +54,7 @@ export function MaskedInput( {
         ...definitions
       },
       lazy: false // make placeholder always visible
-    }, propsMaskOptions ?? {} )
+    }, props.maskOptions ?? {} )
   ), [ mask ] )
 
   const onEvent = useCallback( (
@@ -63,14 +65,13 @@ export function MaskedInput( {
     if (
       !masked ||
       !target
-    ) return
-
-    if ( target.value !== masked.value ) {
-      masked.value = target.value
-      lastValue.current = masked.value
-      event.target.value = masked.value
+    ) {
+      log.warn( 'neither masked nor target is defined' )
+      return
     }
 
+    masked.value = target.value
+    event.target.value = masked.value
     Object.assign( event, {
       maskedValue: masked.value,
       unmaskedValue: masked.unmaskedValue
@@ -78,7 +79,7 @@ export function MaskedInput( {
 
     masked.updateValue()
     masked.alignCursor()
-    setValue( () => lastValue.current )
+    setValue( () => masked.value )
 
     props.onChange?.( event as OnChangeEvent )
   }, [] )
@@ -94,22 +95,47 @@ export function MaskedInput( {
 
   useEffect( () => {
     const masked = imask.current
-    if ( !masked ) return
+    if ( isEmpty( masked, true ) ) {
+      log.warn( 'imask ref not set' )
+      return
+    }
 
-    masked.value = propsValue ?? ''
-    lastValue.current = masked.value
+    const { value } = props
+    if ( isEmpty( value, true ) ) {
+      log.warn( 'value is not controlled' )
+      return
+    }
+
+    masked.value = value ?? ''
     setValue( () => masked.value )
-  }, [ propsValue ] )
+  }, [ props ] )
+
+  const log = Object.assign(
+    ( ...data: any[] ) => {
+      if ( !enableLogs ) return
+      console.log( ...data )
+    }, {
+    warn: ( ...data: any[] ) => {
+      if ( !enableLogs ) return
+      console.warn( ...data )
+    }
+  } )
 
   function updateMaskRef() {
     const input = innerRef.current
+    const masked = imask.current
 
-    if ( !imask.current ) {
-      if ( !input ) return
+    if ( isEmpty( masked ) ) {
+      if ( !input ) {
+        log.warn( 'neither imask not component refs are defined' )
+        return
+      }
 
+      log( 'imask ref created' )
       imask.current = IMask( input, maskOptions )
     } else {
-      imask.current.updateOptions( maskOptions as any )
+      log( 'imask ref updated' )
+      masked.updateOptions( maskOptions as any )
     }
   }
 
@@ -117,23 +143,23 @@ export function MaskedInput( {
     currentRef: InputRef | null
   ) {
     if ( !currentRef?.input ) {
+      log.warn( 'current input ref not defined', currentRef )
       return
     }
 
+    innerRef.current = currentRef.input
+    updateMaskRef()
+
+    if ( isEmpty( ref, true ) ) return
     switch ( typeof ref ) {
       case 'function': {
         ref( currentRef )
         break
       }
       default: {
-        if ( !isEmpty( ref ) ) {
-          ref.current = currentRef
-        }
+        ref.current = currentRef
       }
     }
-
-    innerRef.current = currentRef.input
-    updateMaskRef()
   }
 
   return (

@@ -42,6 +42,7 @@ function MyMaskedInputComponent() {
 | `mask` | [iMask mask pattern](https://imask.js.org/guide.html) | `string` \| `RegExp` \| `Date` \| `number` |
 | `onChange` | Mask change event. | (event: ChangeEvent<HTMLInputElement> & {maskedValue: string unmaskedValue: string }) => any |
 | `maskOptions` | [iMask options](https://imask.js.org/guide.html)  | See `InputMaskOptions` |
+| `enableLogs` | Enables component logs | `false` |
 | `props` | Any other React/Antd props | - |
 
 ## 👷 Built With
