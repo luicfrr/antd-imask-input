@@ -126,8 +126,9 @@ export function MaskedInput( {
         break
       }
       default: {
-        if ( !ref ) return
-        ref.current = currentRef
+        if ( !isEmpty( ref ) ) {
+          ref.current = currentRef
+        }
       }
     }
 
