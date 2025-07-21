@@ -11,3 +11,7 @@ build/
 
 # Typescript
 *.tsbuildinfo
+
+# Next
+.next
+next-env.d.ts

@@ -8,11 +8,15 @@
   "source": "src/index",
   "files": [
     "build",
+    "!**/pages",
+    "!**/public",
+    "!**next**",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__"
   ],
   "scripts": {
+    "dev": "next dev",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "yarn build:main && yarn build:module",
@@ -50,14 +54,17 @@
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.1",
+    "@types/node": "24.0.15",
     "@types/react": "^19",
+    "@types/react-dom": "^19",
     "antd": "^5",
-    "react-dom": "^19",
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
+    "next": "15",
     "prettier": "^3.5.3",
     "react": "^19",
+    "react-dom": "^19",
     "release-it": "^19.0.1",
     "typescript": "~5.8.3"
   },
