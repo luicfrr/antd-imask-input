@@ -85,7 +85,7 @@
       "publish": true
     },
     "github": {
-      "release": true
+      "release": false
     },
     "publishConfig": {
       "registry": "https://registry.npmjs.org"
