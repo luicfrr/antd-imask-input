@@ -8,9 +8,7 @@
   "source": "src/index",
   "files": [
     "build",
-    "!**/pages",
-    "!**/public",
-    "!**next**",
+    "!example",
     "!**/__tests__",
     "!**/__fixtures__",
     "!**/__mocks__"
@@ -20,9 +18,11 @@
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "rm -rf build && yarn build:main && yarn build:module",
-    "build:main": "tsc --noEmit false --module commonjs --outDir build/main",
-    "build:module": "tsc --noEmit false",
-    "release": "yarn prepare && release-it"
+    "build:main": "tsc --module commonjs --outDir build/main",
+    "build:module": "tsc",
+    "release": "yarn prepare && release-it",
+    "example": "yarn --cwd example",
+    "bootstrap": "yarn example && yarn install"
   },
   "keywords": [
     "react",
@@ -59,7 +59,6 @@
     "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
-    "next": "15",
     "prettier": "^3.5.3",
     "react": "^19",
     "react-dom": "^19",

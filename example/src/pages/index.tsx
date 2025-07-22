@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react'
-import { MaskedInput } from '@/index'
+import { MaskedInput } from 'antd-imask-input'
 
 function Index(): ReactNode {
 
   return ( <>
     <MaskedInput
+      enableLogs
       mask='000.000.000-00'
       maskOptions={ {
         lazy: true
@@ -13,6 +14,7 @@ function Index(): ReactNode {
     />
 
     <MaskedInput
+      enableLogs
       mask='(00) 00000-0000'
       maskOptions={ {
         lazy: true

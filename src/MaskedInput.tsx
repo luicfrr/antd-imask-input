@@ -29,6 +29,7 @@ export function MaskedInput( {
   mask,
   definitions,
   enableLogs,
+  maskOptions,
   ...props
 }: MaskedInputProps ) {
   const initialValue = useRef( ( () => {
@@ -46,7 +47,7 @@ export function MaskedInput( {
   const [ value, setValue ] = useState( initialValue.current )
   const innerRef = useRef<HTMLInputElement | null>( null )
   const imask = useRef<InputMask<FactoryArg>>( null )
-  const maskOptions = useMemo<FactoryArg>( () => (
+  const imaskOpts = useMemo<FactoryArg>( () => (
     Object.assign( {
       mask,
       definitions: {
@@ -54,7 +55,7 @@ export function MaskedInput( {
         ...definitions
       },
       lazy: false // make placeholder always visible
-    }, props.maskOptions ?? {} )
+    }, maskOptions ?? {} )
   ), [ mask ] )
 
   const onEvent = useCallback( (
@@ -132,10 +133,10 @@ export function MaskedInput( {
       }
 
       log( 'imask ref created' )
-      imask.current = IMask( input, maskOptions )
+      imask.current = IMask( input, imaskOpts )
     } else {
       log( 'imask ref updated' )
-      masked.updateOptions( maskOptions as any )
+      masked.updateOptions( imaskOpts as any )
     }
   }
 

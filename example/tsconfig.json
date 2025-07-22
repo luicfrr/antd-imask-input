@@ -12,7 +12,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "isolatedModules": true,
-    "jsx": "react",
+    "jsx": "preserve",
     "incremental": true,
     "removeComments": true,
     "declarationMap": true,
@@ -22,30 +22,29 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "build/module",
-    "rootDir": "./src",
+    "rootDir": "../",
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "baseUrl": "./src",
     "paths": {
-      "@/*": [
-        "./*"
+      "antd-imask-input": [
+        "../src/index"
       ]
     },
     "typeRoots": [
-      "./node_modules/@types",
-      "./src/types"
-    ]
+      "./node_modules/@types"
+    ],
+    "noEmit": true
   },
   "compileOnSave": true,
   "include": [
-    "src"
-  ],
+    "src", 
+    "next.config.ts" 
+ ],
   "exclude": [
-    "node_modules", 
-    "build",
-    "example"
+    "node_modules",
+    "build"
   ]
 }
