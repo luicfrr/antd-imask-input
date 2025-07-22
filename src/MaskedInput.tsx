@@ -4,7 +4,8 @@ import React, {
   useState,
   useCallback,
   useEffect,
-  type ChangeEvent
+  type ChangeEvent,
+  type ReactNode
 } from 'react'
 import {
   Input,
@@ -31,7 +32,7 @@ export function MaskedInput( {
   enableLogs,
   maskOptions,
   ...props
-}: MaskedInputProps ) {
+}: MaskedInputProps ): ReactNode {
   const initialValue = useRef( ( () => {
     const {
       value,
