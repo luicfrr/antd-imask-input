@@ -19,12 +19,10 @@
     "dev": "next dev",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
-    "prepare": "yarn build:main && yarn build:module",
-    "build:main": "tsc --module commonjs --outDir build/main",
-    "build:module": "tsc",
-    "release": "release-it",
-    "example": "yarn --cwd example",
-    "bootstrap": "yarn example && yarn install"
+    "prepare": "rm -rf build && yarn build:main && yarn build:module",
+    "build:main": "tsc --noEmit false --module commonjs --outDir build/main",
+    "build:module": "tsc --noEmit false",
+    "release": "yarn prepare && release-it"
   },
   "keywords": [
     "react",
