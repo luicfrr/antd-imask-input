@@ -4,7 +4,7 @@ import MaskedInput, {
 
 // types
 import {
-  MaskType,
+  MaskOptionsType,
   OnChangeEvent,
   MaskedInputProps
 } from './types'
@@ -15,7 +15,7 @@ export {
 }
 
 export type {
-  MaskType,
+  MaskOptionsType,
   OnChangeEvent,
   MaskedInputProps
 }

@@ -5,18 +5,28 @@ function Index(): ReactNode {
 
   return ( <>
     <MaskedInput
-      enableLogs
-      mask='000.000.000-00'
       maskOptions={ {
+        mask: '000.000.000-00',
         lazy: true
       } }
       placeholder='type here'
     />
 
     <MaskedInput
-      enableLogs
-      mask='(00) 00000-0000'
       maskOptions={ {
+        mask: '(00) 00000-0000',
+        lazy: true
+      } }
+      placeholder='type here'
+    />
+
+    <MaskedInput
+      maskOptions={ {
+        mask: [ {
+          mask: '000.000.000-00'
+        }, {
+          mask: /./
+        } ],
         lazy: true
       } }
       placeholder='type here'
