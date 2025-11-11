@@ -2,7 +2,8 @@ import React, {
   useRef,
   useState,
   useEffect,
-  type ReactNode
+  type ReactNode,
+  type ChangeEvent
 } from 'react'
 import { Input } from 'antd'
 import IMask, {
@@ -11,7 +12,10 @@ import IMask, {
 } from 'imask'
 
 // types
-import { MaskedInputProps } from './types'
+import {
+  OnChangeEvent,
+  MaskedInputProps
+} from './types'
 
 // helpers
 import { isEmpty } from './helpers'
@@ -59,20 +63,7 @@ export function MaskedInput( {
 
     imask.current = IMask( inputRef, maskOptions )
     imask.current.on( 'accept', () => {
-      const {
-        value,
-        unmaskedValue
-      } = imask.current!
-
-      setInnerValue( () => value )
-
-      const popup = props[ 'aria-haspopup' ]
-      // input is current inside a Select
-      if ( popup === 'listbox' ) return
-      onChange?.( {
-        maskedValue: value,
-        unmaskedValue: unmaskedValue
-      } )
+      setInnerValue( () => imask.current!.value )
     } )
 
     return () => imask.current?.destroy()
@@ -98,6 +89,25 @@ export function MaskedInput( {
     masked.value = ''
   }
 
+  function onChangeEvent(
+    event: ChangeEvent<HTMLInputElement>
+  ) {
+    const masked = imask.current
+    const target = event.target
+    if (
+      !masked ||
+      !target
+      // !insideSelect
+    ) return
+
+    Object.assign( event, {
+      maskedValue: masked.value,
+      unmaskedValue: masked.unmaskedValue
+    } )
+
+    onChange?.( event as OnChangeEvent )
+  }
+
   return (
     <FinalInput
       { ...props }
@@ -115,6 +125,7 @@ export function MaskedInput( {
       defaultValue={ innerDefaultValue }
       value={ innerValue }
       onClear={ handleClear }
+      onChange={ onChangeEvent }
     />
   )
 }

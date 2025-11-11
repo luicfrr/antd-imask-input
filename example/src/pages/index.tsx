@@ -84,6 +84,22 @@ function Index(): ReactNode {
       onSelect={ ( value: string ) => {
         console.log( 'selected value', value )
       } }
+      filterOption={ (
+        inputValue,
+        option
+      ) => {
+        if ( !option ) return false
+
+        const {
+          value,
+          label
+        } = option
+
+        return (
+          String( value ).toLowerCase().indexOf( inputValue.toLowerCase() ) > -1 ||
+          String( label ).toLowerCase().indexOf( inputValue.toLowerCase() ) > -1
+        )
+      } }
     >
       <MaskedInput
         allowClear
