@@ -76,12 +76,20 @@ export function MaskedInput( {
     masked.value = value
   }, [ value ] )
 
+  function handleClear() {
+    const masked = imask.current
+    if ( isEmpty( masked, true ) ) return
+
+    masked.value = ''
+  }
+
   return (
     <FinalInput
       { ...props }
       ref={ curr => setInputRef( () => curr?.input ) }
       defaultValue={ innerDefaultValue }
       value={ innerValue }
+      onClear={ handleClear }
     />
   )
 }

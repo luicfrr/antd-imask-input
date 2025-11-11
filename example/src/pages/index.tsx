@@ -5,6 +5,7 @@ function Index(): ReactNode {
 
   return ( <>
     <MaskedInput
+      allowClear
       maskOptions={ {
         mask: '000.000.000-00',
         lazy: true
@@ -13,6 +14,7 @@ function Index(): ReactNode {
     />
 
     <MaskedInput
+      allowClear
       maskOptions={ {
         mask: '(00) 00000-0000',
         lazy: true
@@ -21,6 +23,7 @@ function Index(): ReactNode {
     />
 
     <MaskedInput
+      allowClear
       maskOptions={ {
         mask: [ {
           mask: '000.000.000-00'
@@ -33,6 +36,7 @@ function Index(): ReactNode {
     />
 
     <MaskedInput
+      allowClear
       maskOptions={ {
         mask: [
           { mask: '\\0,\\00' },
