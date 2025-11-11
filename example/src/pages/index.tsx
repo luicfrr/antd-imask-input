@@ -39,6 +39,24 @@ function Index(): ReactNode {
     <MaskedInput
       allowClear
       maskOptions={ {
+        mask: /^[1-6]\d{0,5}$/,
+        lazy: true
+      } }
+      placeholder='regex (real)'
+    />
+
+    <MaskedInput
+      allowClear
+      maskOptions={ {
+        mask: '/^[1-6]\\d{0,5}$/',
+        lazy: true
+      } }
+      placeholder='regex (string)'
+    />
+
+    <MaskedInput
+      allowClear
+      maskOptions={ {
         mask: [
           { mask: '\\0,\\00' },
           { mask: '\\0,00' },

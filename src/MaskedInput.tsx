@@ -47,6 +47,16 @@ export function MaskedInput( {
   useEffect( () => {
     if ( isEmpty( inputRef ) ) return
 
+    const mask = maskOptions.mask
+    // check if mask is a string regex
+    if (
+      typeof mask === 'string' &&
+      mask[ 0 ] === '/' &&
+      mask[ mask.length - 1 ] === '/'
+    ) {
+      maskOptions.mask = new RegExp( mask.slice( 1, -1 ) )
+    }
+
     imask.current = IMask( inputRef, maskOptions )
     imask.current.on( 'accept', () => {
       const {
