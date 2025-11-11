@@ -29,7 +29,6 @@ export function MaskedInput( {
   ref,
   ...props
 }: MaskedInputProps ): ReactNode {
-  console.log( 'props' )
   const imask = useRef<InputMask<FactoryOpts>>( null )
   const innerDefaultValue = useRef( ( () => {
     if ( !isEmpty( defaultValue ) ) {
@@ -93,7 +92,6 @@ export function MaskedInput( {
   function onChangeEvent(
     event: ChangeEvent<HTMLInputElement>
   ) {
-    console.log( 'change event', event )
     const masked = imask.current
     Object.assign( event, {
       maskedValue: masked?.value,
