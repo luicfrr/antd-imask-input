@@ -9,7 +9,7 @@ function Index(): ReactNode {
         mask: '000.000.000-00',
         lazy: true
       } }
-      placeholder='type here'
+      placeholder='cpf'
     />
 
     <MaskedInput
@@ -17,7 +17,7 @@ function Index(): ReactNode {
         mask: '(00) 00000-0000',
         lazy: true
       } }
-      placeholder='type here'
+      placeholder='phone'
     />
 
     <MaskedInput
@@ -29,7 +29,25 @@ function Index(): ReactNode {
         } ],
         lazy: true
       } }
-      placeholder='type here'
+      placeholder='multiple'
+    />
+
+    <MaskedInput
+      maskOptions={ {
+        mask: [
+          { mask: '\\0,\\00' },
+          { mask: '\\0,00' },
+          { mask: '0,00' },
+          { mask: '00,00' },
+          { mask: '000,00' },
+          { mask: '0.000,00' },
+          { mask: '00.000,00' },
+          { mask: '000.000,00' },
+          { mask: '0.000.000,00' },
+        ],
+        lazy: true
+      } }
+      placeholder='money'
     />
   </> )
 }

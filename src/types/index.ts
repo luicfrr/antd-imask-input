@@ -1,7 +1,4 @@
-import {
-  type ChangeEvent,
-  type Ref
-} from 'react'
+import { type Ref } from 'react'
 import {
   type InputProps,
   type InputRef
@@ -9,7 +6,7 @@ import {
 import { type FactoryOpts } from 'imask'
 
 export type MaskOptionsType = FactoryOpts
-export type OnChangeEvent = ChangeEvent<HTMLInputElement> & {
+export type OnChangeEvent = {
   maskedValue: string
   unmaskedValue: string
 }

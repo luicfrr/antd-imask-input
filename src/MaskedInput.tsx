@@ -2,20 +2,16 @@ import React, {
   useRef,
   useState,
   useEffect,
-  type ChangeEvent,
   type ReactNode
 } from 'react'
 import { Input } from 'antd'
 import IMask, {
   FactoryOpts,
-  FactoryReturnMasked
+  InputMask
 } from 'imask'
 
 // types
-import {
-  MaskedInputProps,
-  OnChangeEvent
-} from './types'
+import { MaskedInputProps } from './types'
 
 // helpers
 import { isEmpty } from './helpers'
@@ -27,6 +23,7 @@ export function MaskedInput( {
   onChange,
   ...props
 }: MaskedInputProps ): ReactNode {
+  const imask = useRef<InputMask<FactoryOpts>>( null )
   const innerDefaultValue = useRef( ( () => {
     if ( !isEmpty( defaultValue ) ) {
       return defaultValue
@@ -34,53 +31,55 @@ export function MaskedInput( {
 
     return value ?? ''
   } )() ).current
-  const imask = useRef<FactoryReturnMasked<FactoryOpts>>( null )
+
+  const [
+    inputRef,
+    setInputRef
+  ] = useState<HTMLInputElement | null | undefined>( null )
   const [
     innerValue,
     setInnerValue
   ] = useState( innerDefaultValue )
 
   useEffect( () => {
-    imask.current = IMask.createMask( maskOptions )
-  }, [ maskOptions ] )
+    if ( isEmpty( inputRef ) ) return
+
+    imask.current = IMask( inputRef, maskOptions )
+    imask.current.on( 'accept', () => {
+      const {
+        value,
+        unmaskedValue
+      } = imask.current!
+
+      setInnerValue( () => value )
+      onChange?.( {
+        maskedValue: value,
+        unmaskedValue: unmaskedValue
+      } )
+    } )
+
+    return () => imask.current?.destroy()
+  }, [
+    inputRef,
+    maskOptions
+  ] )
 
   useEffect( () => {
     const masked = imask.current
-    if ( isEmpty( masked, true ) ) return
-
-    if ( isEmpty( value, true ) ) return
-
-    masked.resolve( value )
-    setInnerValue( () => masked.value )
-  }, [ value ] )
-
-  function onChangeEvent(
-    event: ChangeEvent<HTMLInputElement>
-  ) {
-    const masked = imask.current
-    const target = event.target
     if (
-      !masked ||
-      !target
+      isEmpty( value, true ) ||
+      isEmpty( masked, true )
     ) return
 
-    masked.resolve( target.value )
-    event.target.value = masked.value
-    Object.assign( event, {
-      maskedValue: masked.value,
-      unmaskedValue: masked.unmaskedValue
-    } )
-
-    setInnerValue( () => masked.value )
-    onChange?.( event as OnChangeEvent )
-  }
+    masked.value = value
+  }, [ value ] )
 
   return (
     <Input
       { ...props }
+      ref={ curr => setInputRef( () => curr?.input ) }
       defaultValue={ innerDefaultValue }
       value={ innerValue }
-      onChange={ onChangeEvent }
     />
   )
 }
