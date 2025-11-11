@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react'
 import { MaskedInput } from 'antd-imask-input'
+import { AutoComplete } from 'antd'
 
 function Index(): ReactNode {
 
@@ -53,6 +54,28 @@ function Index(): ReactNode {
       } }
       placeholder='money'
     />
+
+    <AutoComplete
+      options={ [ {
+        label: 'Person 1 - 123.456.789-00',
+        value: '12345678900'
+      }, {
+        label: 'Person 2 - 987.654.321-00',
+        value: '98765432100'
+      } ] }
+      onSelect={ ( value: string ) => {
+        console.log( 'selected value', value )
+      } }
+    >
+      <MaskedInput
+        allowClear
+        maskOptions={ {
+          mask: '000.000.000-00',
+          lazy: true
+        } }
+        placeholder='cpf'
+      />
+    </AutoComplete>
   </> )
 }
 

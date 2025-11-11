@@ -55,6 +55,10 @@ export function MaskedInput( {
       } = imask.current!
 
       setInnerValue( () => value )
+
+      const popup = props[ 'aria-haspopup' ]
+      // input is current inside a Select
+      if ( popup === 'listbox' ) return
       onChange?.( {
         maskedValue: value,
         unmaskedValue: unmaskedValue
