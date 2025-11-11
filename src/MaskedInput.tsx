@@ -22,6 +22,7 @@ export function MaskedInput( {
   defaultValue,
   searchInput,
   onChange,
+  ref,
   ...props
 }: MaskedInputProps ): ReactNode {
   const imask = useRef<InputMask<FactoryOpts>>( null )
@@ -86,7 +87,17 @@ export function MaskedInput( {
   return (
     <FinalInput
       { ...props }
-      ref={ curr => setInputRef( () => curr?.input ) }
+      ref={ ( currentRef ) => {
+        const input = currentRef?.input
+        setInputRef( () => input )
+
+        if ( isEmpty( ref ) ) return
+        if ( typeof ref === 'function' ) {
+          ref( currentRef )
+        } else {
+          ref.current = currentRef
+        }
+      } }
       defaultValue={ innerDefaultValue }
       value={ innerValue }
       onClear={ handleClear }
