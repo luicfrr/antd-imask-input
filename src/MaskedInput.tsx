@@ -20,6 +20,7 @@ export function MaskedInput( {
   maskOptions,
   value,
   defaultValue,
+  searchInput,
   onChange,
   ...props
 }: MaskedInputProps ): ReactNode {
@@ -31,6 +32,7 @@ export function MaskedInput( {
 
     return value ?? ''
   } )() ).current
+  const FinalInput = useRef( searchInput ? Input.Search : Input ).current
 
   const [
     inputRef,
@@ -75,7 +77,7 @@ export function MaskedInput( {
   }, [ value ] )
 
   return (
-    <Input
+    <FinalInput
       { ...props }
       ref={ curr => setInputRef( () => curr?.input ) }
       defaultValue={ innerDefaultValue }
