@@ -56,6 +56,7 @@ function Index(): ReactNode {
 
     <MaskedInput
       allowClear
+      onChange={ ( event ) => { console.log( 'event', event ) } }
       maskOptions={ {
         mask: [
           { mask: '\\0,\\00' },

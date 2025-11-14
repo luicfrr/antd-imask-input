@@ -2,8 +2,7 @@ import React, {
   useRef,
   useState,
   useEffect,
-  type ReactNode,
-  type ChangeEvent
+  type ReactNode
 } from 'react'
 import { Input } from 'antd'
 import IMask, {
@@ -49,7 +48,7 @@ export function MaskedInput( {
   ] = useState( innerDefaultValue )
 
   useEffect( () => {
-    if ( isEmpty( inputRef ) ) return
+    if ( isEmpty( inputRef, true ) ) return
 
     const mask = maskOptions.mask
     // check if mask is a string regex
@@ -63,7 +62,16 @@ export function MaskedInput( {
 
     imask.current = IMask( inputRef, maskOptions )
     imask.current.on( 'accept', () => {
-      setInnerValue( () => imask.current!.value )
+      const {
+        value,
+        unmaskedValue
+      } = imask.current!
+
+      setInnerValue( () => value )
+      onChange?.( {
+        maskedValue: value,
+        unmaskedValue
+      } as OnChangeEvent )
     } )
 
     return () => imask.current?.destroy()
@@ -87,18 +95,10 @@ export function MaskedInput( {
     if ( isEmpty( masked, true ) ) return
 
     masked.value = ''
-  }
-
-  function onChangeEvent(
-    event: ChangeEvent<HTMLInputElement>
-  ) {
-    const masked = imask.current
-    Object.assign( event, {
-      maskedValue: masked?.value,
-      unmaskedValue: masked?.unmaskedValue
-    } )
-
-    onChange?.( event as OnChangeEvent )
+    onChange?.( {
+      maskedValue: '',
+      unmaskedValue: ''
+    } as OnChangeEvent )
   }
 
   return (
@@ -118,7 +118,6 @@ export function MaskedInput( {
       defaultValue={ innerDefaultValue }
       value={ innerValue }
       onClear={ handleClear }
-      onChange={ onChangeEvent }
     />
   )
 }
