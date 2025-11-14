@@ -4,17 +4,14 @@ import React, {
   useEffect,
   type ReactNode
 } from 'react'
-import { Input } from 'antd'
+import { Input, InputRef } from 'antd'
 import IMask, {
   FactoryOpts,
   InputMask
 } from 'imask'
 
 // types
-import {
-  OnChangeEvent,
-  MaskedInputProps
-} from './types'
+import { MaskedInputProps } from './types'
 
 // helpers
 import { isEmpty } from './helpers'
@@ -25,7 +22,7 @@ export function MaskedInput( {
   defaultValue,
   searchInput,
   onChange,
-  ref,
+  ref: forwardRef,
   ...props
 }: MaskedInputProps ): ReactNode {
   const imask = useRef<InputMask<FactoryOpts>>( null )
@@ -38,17 +35,14 @@ export function MaskedInput( {
   } )() ).current
   const FinalInput = useRef( searchInput ? Input.Search : Input ).current
 
-  const [
-    inputRef,
-    setInputRef
-  ] = useState<HTMLInputElement | null | undefined>( null )
+  const innerRef = useRef<HTMLInputElement | null | undefined>( null )
   const [
     innerValue,
     setInnerValue
   ] = useState( innerDefaultValue )
 
   useEffect( () => {
-    if ( isEmpty( inputRef, true ) ) return
+    if ( isEmpty( innerRef.current, true ) ) return
 
     const mask = maskOptions.mask
     // check if mask is a string regex
@@ -60,7 +54,11 @@ export function MaskedInput( {
       maskOptions.mask = new RegExp( mask.slice( 1, -1 ) )
     }
 
-    imask.current = IMask( inputRef, maskOptions )
+    imask.current?.destroy()
+    imask.current = IMask( innerRef.current, maskOptions )
+    imask.current.value = innerValue
+    setInnerValue( () => imask.current!.value ?? '' )
+
     imask.current.on( 'accept', () => {
       const {
         value,
@@ -71,24 +69,37 @@ export function MaskedInput( {
       onChange?.( {
         maskedValue: value,
         unmaskedValue
-      } as OnChangeEvent )
+      } )
     } )
 
     return () => imask.current?.destroy()
-  }, [
-    inputRef,
-    maskOptions
-  ] )
+  }, [ maskOptions ] )
 
   useEffect( () => {
     const masked = imask.current
     if (
       isEmpty( value, true ) ||
-      isEmpty( masked, true )
+      isEmpty( masked, true ) ||
+      masked.value === value
     ) return
 
     masked.value = value
+    setInnerValue( () => masked.value )
   }, [ value ] )
+
+  function handleRef(
+    ref: InputRef | null
+  ) {
+    const input = ref?.input
+    innerRef.current = input
+
+    if ( isEmpty( forwardRef ) ) return
+    if ( typeof forwardRef === 'function' ) {
+      forwardRef( ref )
+    } else {
+      forwardRef.current = ref
+    }
+  }
 
   function handleClear() {
     const masked = imask.current
@@ -98,25 +109,15 @@ export function MaskedInput( {
     onChange?.( {
       maskedValue: '',
       unmaskedValue: ''
-    } as OnChangeEvent )
+    } )
   }
 
   return (
     <FinalInput
       { ...props }
-      ref={ ( currentRef ) => {
-        const input = currentRef?.input
-        setInputRef( () => input )
-
-        if ( isEmpty( ref ) ) return
-        if ( typeof ref === 'function' ) {
-          ref( currentRef )
-        } else {
-          ref.current = currentRef
-        }
-      } }
-      defaultValue={ innerDefaultValue }
+      ref={ handleRef }
       value={ innerValue }
+      onChange={ undefined }
       onClear={ handleClear }
     />
   )
