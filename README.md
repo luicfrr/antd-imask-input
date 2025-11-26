@@ -22,8 +22,8 @@ function MyMaskedInputComponent() {
 
   return (
     <InputMasked
-      mask={ '0[0][0].0[0][0].0[0][0].0[0][0]' }
       maskOptions={ {
+        mask: '0[0][0].0[0][0].0[0][0].0[0][0]'
         lazy: true // makes mask placeholder invisible
       } }
       placeholder={ 'Type here' }
@@ -39,10 +39,8 @@ function MyMaskedInputComponent() {
 ## Mask Options
 | Option  | Description | Options |
 | ------------- | ------------- | ------------- |
-| `mask` | [iMask mask pattern](https://imask.js.org/guide.html) | `string` \| `RegExp` \| `Date` \| `number` |
-| `onChange` | Mask change event. | (event: ChangeEvent<HTMLInputElement> & {maskedValue: string unmaskedValue: string }) => any |
 | `maskOptions` | [iMask options](https://imask.js.org/guide.html)  | See `InputMaskOptions` |
-| `enableLogs` | Enables component logs | `false` |
+| `onChange` | Mask change event. | (event: ChangeEvent<HTMLInputElement> & {maskedValue: string unmaskedValue: string }) => any |
 | `props` | Any other React/Antd props | - |
 
 ## 👷 Built With
