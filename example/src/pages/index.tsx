@@ -1,8 +1,31 @@
-import React, { ReactNode } from 'react'
-import { MaskedInput } from 'antd-imask-input'
+import React, {
+  ReactNode,
+  useState
+} from 'react'
 import { AutoComplete } from 'antd'
+import {
+  IMask,
+  MaskedInput,
+  OnChangeEvent
+} from 'antd-imask-input'
+import {
+  MaskedPattern
+} from 'imask'
 
 function Index(): ReactNode {
+  const [
+    value,
+    setValue
+  ] = useState<OnChangeEvent>()
+  const rangeMask: Partial<MaskedPattern> = {
+    blocks: {
+      mm: {
+        mask: IMask.MaskedRange,
+        from: 0,
+        to: 59
+      }
+    }
+  }
 
   return ( <>
     <MaskedInput
@@ -112,6 +135,45 @@ function Index(): ReactNode {
         placeholder='cpf'
       />
     </AutoComplete>
+
+    <MaskedInput
+      allowClear
+      maskOptions={ {
+        mask: [ {
+          mask: ''
+        }, {
+          mask: '\\0\\0`:\\00',
+        }, {
+          mask: '\\0\\0`:mm',
+          ...rangeMask
+        }, {
+          mask: '\\00`:mm',
+          ...rangeMask
+        }, {
+          mask: '00`:mm',
+          ...rangeMask
+        }, {
+          mask: '000:mm',
+          ...rangeMask
+        }, {
+          mask: '0000:mm',
+          ...rangeMask
+        }, {
+          mask: '00000:mm',
+          ...rangeMask
+        }, {
+          mask: '000000:mm',
+          ...rangeMask
+        } ]
+      } }
+      placeholder='controled value'
+      size='large'
+      value={ value?.maskedValue ?? '' }
+      onChange={ ( change ) => {
+        console.log( 'controled change event', change )
+        setValue( () => change )
+      } }
+    />
   </> )
 }
 
