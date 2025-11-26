@@ -5,12 +5,16 @@ import {
   type InputProps,
   type InputRef
 } from 'antd'
-import { type FactoryOpts } from 'imask'
+import {
+  type FactoryOpts,
+  type InputMaskElement
+} from 'imask'
 
 export type MaskOptionsType = FactoryOpts
 export type OnChangeEvent = {
   maskedValue: string
   unmaskedValue: string
+  target: InputMaskElement | null
 }
 
 export interface MaskedInputProps

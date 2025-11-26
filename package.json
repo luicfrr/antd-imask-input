@@ -48,7 +48,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "imask": "^7"
+    "imask": "^7.6.1",
+    "react-imask": "^7.6.1"
   },
   "devDependencies": {
     "@release-it/conventional-changelog": "^10.0.1",
