@@ -2,7 +2,10 @@ import React, {
   ReactNode,
   useState
 } from 'react'
-import { AutoComplete } from 'antd'
+import {
+  AutoComplete,
+  Form
+} from 'antd'
 import {
   IMask,
   MaskedInput,
@@ -13,6 +16,7 @@ import {
 } from 'imask'
 
 function Index(): ReactNode {
+  const [ form ] = Form.useForm()
   const [
     value,
     setValue
@@ -174,6 +178,25 @@ function Index(): ReactNode {
         setValue( () => change )
       } }
     />
+
+    <Form
+      form={ form }
+    >
+      <Form.Item
+        name='cpf'
+        normalize={ ( value ) => console.log( 'normalize', value ) }
+        getValueFromEvent={ ( { unmaskedValue }: OnChangeEvent ) => unmaskedValue }
+      >
+        <MaskedInput
+          allowClear
+          maskOptions={ {
+            mask: '000.000.000-00',
+            lazy: true
+          } }
+          placeholder='form cpf'
+        />
+      </Form.Item>
+    </Form>
   </> )
 }
 
