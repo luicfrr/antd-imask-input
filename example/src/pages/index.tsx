@@ -181,7 +181,6 @@ function Index(): ReactNode {
       >
         <MaskedInput
           allowClear
-          // maskReturn
           maskOptions={ {
             mask: '000.000.000-00',
             lazy: true
@@ -190,6 +189,14 @@ function Index(): ReactNode {
         />
       </Form.Item>
     </Form>
+
+    <button
+      onClick={ () => {
+        form.setFieldValue( 'cpf', '98765432100' )
+      } }
+    >
+      update form
+    </button>
   </> )
 }
 

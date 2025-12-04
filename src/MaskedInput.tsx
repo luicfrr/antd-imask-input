@@ -1,4 +1,5 @@
 import React, {
+  useEffect,
   useRef,
   type ReactNode
 } from 'react'
@@ -37,6 +38,11 @@ export function MaskedInput( {
     defaultValue: defaultValue ?? forwardValue ?? ''
   } )
   const FinalInput = useRef( searchInput ? Input.Search : Input ).current
+
+  useEffect( () => {
+    if ( isEmpty( forwardValue, true ) ) return
+    setValue( forwardValue )
+  }, [ forwardValue ] )
 
   function handleMaskOptions(): FactoryOpts {
     const mask = maskOptions.mask
