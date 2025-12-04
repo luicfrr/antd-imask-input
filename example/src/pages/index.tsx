@@ -169,14 +169,19 @@ function Index(): ReactNode {
 
     <Form
       form={ form }
+      initialValues={ {
+        cpf: '12345678900'
+      } }
     >
       <Form.Item
+        id='cpf'
+        key='cpf'
         name='cpf'
         normalize={ ( value ) => console.log( 'normalize', value ) }
       >
         <MaskedInput
           allowClear
-          maskReturn
+          // maskReturn
           maskOptions={ {
             mask: '000.000.000-00',
             lazy: true

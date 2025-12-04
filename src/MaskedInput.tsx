@@ -25,6 +25,7 @@ export function MaskedInput( {
   maskReturn,
   onChange,
   ref: forwardRef,
+  value: forwardValue,
   ...props
 }: MaskedInputProps ): ReactNode {
   const {
@@ -33,7 +34,7 @@ export function MaskedInput( {
     setValue
   } = useIMask( handleMaskOptions(), {
     onAccept,
-    defaultValue
+    defaultValue: defaultValue ?? forwardValue ?? ''
   } )
   const FinalInput = useRef( searchInput ? Input.Search : Input ).current
 

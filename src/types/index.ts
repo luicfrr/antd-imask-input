@@ -21,6 +21,7 @@ export interface MaskedInputProps
   searchInput?: boolean
   maskOptions: MaskOptionsType
   ref?: Ref<InputRef>
+  /** This will NOT make input value controlled */
   value?: never
   defaultValue?: string
   onChange?: (
