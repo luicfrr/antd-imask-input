@@ -63,7 +63,7 @@ export function MaskedInput( {
     onChange?.( {
       maskedValue: '',
       unmaskedValue: '',
-      target: ref.current
+      target: ref.current as HTMLInputElement
     } )
   }
 
@@ -87,7 +87,7 @@ export function MaskedInput( {
     onChange?.( {
       maskedValue: accept,
       unmaskedValue,
-      target: ref.current
+      target: ref.current as HTMLInputElement
     } )
   }
 

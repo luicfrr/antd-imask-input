@@ -6,15 +6,14 @@ import {
   type InputRef
 } from 'antd'
 import {
-  type FactoryOpts,
-  type InputMaskElement
+  type FactoryOpts
 } from 'imask'
 
 export type MaskOptionsType = FactoryOpts
 export type OnChangeEvent = {
   maskedValue: string
   unmaskedValue: string
-  target: InputMaskElement | null
+  target: HTMLInputElement | null
 }
 
 export interface MaskedInputProps
