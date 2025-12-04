@@ -1,6 +1,5 @@
 import React, {
-  ReactNode,
-  useState
+  ReactNode
 } from 'react'
 import {
   AutoComplete,
@@ -8,8 +7,7 @@ import {
 } from 'antd'
 import {
   IMask,
-  MaskedInput,
-  OnChangeEvent
+  MaskedInput
 } from 'antd-imask-input'
 import {
   MaskedPattern
@@ -17,10 +15,6 @@ import {
 
 function Index(): ReactNode {
   const [ form ] = Form.useForm()
-  const [
-    value,
-    setValue
-  ] = useState<OnChangeEvent>()
   const rangeMask: Partial<MaskedPattern> = {
     blocks: {
       mm: {
@@ -170,13 +164,8 @@ function Index(): ReactNode {
           ...rangeMask
         } ]
       } }
-      placeholder='controled value'
+      placeholder='ranged mask'
       size='large'
-      value={ value?.maskedValue ?? '' }
-      onChange={ ( change ) => {
-        console.log( 'controled change event', change )
-        setValue( () => change )
-      } }
     />
 
     <Form
@@ -185,7 +174,6 @@ function Index(): ReactNode {
       <Form.Item
         name='cpf'
         normalize={ ( value ) => console.log( 'normalize', value ) }
-        getValueFromEvent={ ( { unmaskedValue }: OnChangeEvent ) => unmaskedValue }
       >
         <MaskedInput
           allowClear
