@@ -11,15 +11,13 @@ import {
 
 export type MaskOptionsType = FactoryOpts
 export type OnChangeEvent = {
-  maskedValue: string
-  unmaskedValue: string
-  target: HTMLInputElement | null
+  target: HTMLInputElement
 }
 
 export interface MaskedInputProps
   extends Omit<InputProps, 'onChange' | 'value' | 'defaultValue'> {
-  /** Returned value should be unmasked? */
-  unmaskReturn?: boolean
+  /** Returned value should be masked? */
+  maskReturn?: boolean
   searchInput?: boolean
   maskOptions: MaskOptionsType
   ref?: Ref<InputRef>
