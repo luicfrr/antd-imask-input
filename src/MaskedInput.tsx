@@ -1,6 +1,6 @@
 import React, {
-  useRef,
   useEffect,
+  useRef,
   type ReactNode
 } from 'react'
 import {
@@ -22,8 +22,8 @@ export function MaskedInput( {
   maskOptions,
   defaultValue,
   searchInput,
+  maskReturn,
   onChange,
-  value: forwardValue,
   ref: forwardRef,
   ...props
 }: MaskedInputProps ): ReactNode {
@@ -34,14 +34,21 @@ export function MaskedInput( {
     unmaskedValue,
     setUnmaskedValue
   } = useIMask( handleMaskOptions(), {
-    defaultValue,
-    onAccept
+    defaultValue
   } )
   const FinalInput = useRef( searchInput ? Input.Search : Input ).current
 
   useEffect( () => {
-    setValue( forwardValue ?? '' )
-  }, [ forwardValue ] )
+    onChange?.( {
+      target: {
+        ...ref.current as HTMLInputElement,
+        value: maskReturn ? value : unmaskedValue
+      }
+    } )
+  }, [
+    value,
+    unmaskedValue
+  ] )
 
   function handleMaskOptions(): FactoryOpts {
     const mask = maskOptions.mask
@@ -58,13 +65,8 @@ export function MaskedInput( {
   }
 
   function handleClear() {
-    setUnmaskedValue( '' )
     setValue( '' )
-    onChange?.( {
-      maskedValue: '',
-      unmaskedValue: '',
-      target: ref.current as HTMLInputElement
-    } )
+    setUnmaskedValue( '' )
   }
 
   function handleRef(
@@ -79,16 +81,6 @@ export function MaskedInput( {
     } else {
       forwardRef.current = inputRef
     }
-  }
-
-  function onAccept(
-    accept: string
-  ) {
-    onChange?.( {
-      maskedValue: accept,
-      unmaskedValue,
-      target: ref.current as HTMLInputElement
-    } )
   }
 
   return (

@@ -189,6 +189,7 @@ function Index(): ReactNode {
       >
         <MaskedInput
           allowClear
+          maskReturn
           maskOptions={ {
             mask: '000.000.000-00',
             lazy: true

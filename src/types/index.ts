@@ -18,6 +18,8 @@ export type OnChangeEvent = {
 
 export interface MaskedInputProps
   extends Omit<InputProps, 'onChange' | 'value' | 'defaultValue'> {
+  /** Returned value should be unmasked? */
+  unmaskReturn?: boolean
   searchInput?: boolean
   maskOptions: MaskOptionsType
   ref?: Ref<InputRef>
