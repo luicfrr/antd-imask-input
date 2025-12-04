@@ -77,7 +77,6 @@ function Index(): ReactNode {
 
     <MaskedInput
       allowClear
-      onChange={ ( event ) => { console.log( 'event', event ) } }
       defaultValue={ '123' }
       maskOptions={ {
         mask: [
