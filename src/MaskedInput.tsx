@@ -1,5 +1,4 @@
 import React, {
-  useEffect,
   useRef,
   type ReactNode
 } from 'react'
@@ -9,6 +8,7 @@ import {
 } from 'antd'
 import { useIMask } from 'react-imask'
 import IMask, {
+  InputMask,
   type FactoryOpts
 } from 'imask'
 
@@ -30,25 +30,12 @@ export function MaskedInput( {
   const {
     ref,
     value,
-    setValue,
-    unmaskedValue,
-    setUnmaskedValue
+    setValue
   } = useIMask( handleMaskOptions(), {
+    onAccept,
     defaultValue
   } )
   const FinalInput = useRef( searchInput ? Input.Search : Input ).current
-
-  useEffect( () => {
-    onChange?.( {
-      target: {
-        ...ref.current as HTMLInputElement,
-        value: maskReturn ? value : unmaskedValue
-      }
-    } )
-  }, [
-    value,
-    unmaskedValue
-  ] )
 
   function handleMaskOptions(): FactoryOpts {
     const mask = maskOptions.mask
@@ -66,7 +53,12 @@ export function MaskedInput( {
 
   function handleClear() {
     setValue( '' )
-    setUnmaskedValue( '' )
+    onChange?.( {
+      target: {
+        ...ref.current as HTMLInputElement,
+        value: ''
+      }
+    } )
   }
 
   function handleRef(
@@ -81,6 +73,18 @@ export function MaskedInput( {
     } else {
       forwardRef.current = inputRef
     }
+  }
+
+  function onAccept(
+    _: string,
+    mask: InputMask<FactoryOpts>
+  ) {
+    onChange?.( {
+      target: {
+        ...ref.current as HTMLInputElement,
+        value: maskReturn ? mask.value : mask.unmaskedValue
+      }
+    } )
   }
 
   return (
