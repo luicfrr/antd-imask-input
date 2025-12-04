@@ -38,7 +38,7 @@ function Index(): ReactNode {
     <MaskedInput
       allowClear
       maskOptions={ {
-        mask: '(00) 00000-0000',
+        mask: '+{55} ({00}) 00000-0000',
         lazy: true
       } }
       placeholder='phone'
@@ -177,7 +177,6 @@ function Index(): ReactNode {
         id='cpf'
         key='cpf'
         name='cpf'
-        normalize={ ( value ) => console.log( 'normalize', value ) }
       >
         <MaskedInput
           allowClear
@@ -186,6 +185,21 @@ function Index(): ReactNode {
             lazy: true
           } }
           placeholder='form cpf'
+        />
+      </Form.Item>
+
+      <Form.Item
+        id='phone'
+        key='phone'
+        name='phone'
+      >
+        <MaskedInput
+          allowClear
+          maskOptions={ {
+            mask: '+{55} ({00}) 00000-0000',
+            lazy: true
+          } }
+          placeholder='form phone'
         />
       </Form.Item>
     </Form>
