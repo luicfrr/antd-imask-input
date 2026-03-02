@@ -13,7 +13,7 @@
     "registry": "https://registry.npmjs.org/"
   },
   "dependencies": {
-    "next": "^15",
+    "next": "^16",
     "antd-imask-input": "link:../"
   },
   "devDependencies": {}
